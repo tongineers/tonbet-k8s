@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tonbet-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  # tls:
+  # - hosts:
+  #   - tonbet.io
+  #   secretName: letsencrypt-prod
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: 
+                name: tonbet-frontend
+                port:
+                  number: 8081
+          - path: /api/v1/(bets|account)
+            pathType: ImplementationSpecific
+            backend:
+              service: 
+                name: tonbet-backend
+                port:
+                  number: 5001
